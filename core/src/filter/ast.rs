@@ -27,7 +27,7 @@ lazy_static! {
         // define valid outer layers for each protocol header
         g.extend_with_edges(&[
             (ipv4, ethernet),
-            (ipv6, ethernet),
+            //(ipv6, ethernet),
             (tcp, ipv4), //(tcp, ipv6),
             (udp, ipv4), //(udp, ipv6),
             (tls, tcp),

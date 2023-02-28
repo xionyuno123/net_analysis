@@ -19,6 +19,7 @@ colored = "2"
 cpu-time = "1.0.0"
 crossbeam-channel = "0.5.1"
 csv = "1.1.6"
+pnet = "0.27.2"
 ctrlc = { version = "3.1.7", features = ["termination"] }
 dns-parser = { git = "https://github.com/thegwan/dns-parser.git" }
 hashlink = "0.7.0"
@@ -53,4 +54,4 @@ timing = []
 mlx5 = []
 retina = []
 run = ["run-packet"]
-default = ["mlx5","run"]
+default = ["mlx5","retina"]

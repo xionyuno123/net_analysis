@@ -11,6 +11,7 @@
 
 use crate::dpdk;
 use crate::memory::mempool::MempoolError;
+#[cfg(all(feature = "retina", not(feature = "run")))]
 use crate::protocols::packet::{Packet, PacketHeader, PacketParseError};
 
 use std::fmt;
@@ -112,6 +113,7 @@ impl Mbuf {
   /// Reads the data at `offset` as `T` and returns it as a raw pointer. Errors if `offset` is
   /// greater than or equal to the buffer length or the size of `T` exceeds the size of the data
   /// stored at `offset`.
+  #[cfg(all(feature = "retina", not(feature = "run")))]
   pub(crate) fn get_data<T: PacketHeader>(
     &self,
     offset: usize,
@@ -149,6 +151,7 @@ impl Mbuf {
   }
 }
 
+#[cfg(all(feature = "retina", not(feature = "run")))]
 impl<'a> Packet<'a> for Mbuf {
   fn mbuf(&self) -> &Mbuf {
     self

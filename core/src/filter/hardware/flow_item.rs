@@ -98,8 +98,8 @@ impl FlowPattern {
           "version_ihl" => match value {
             Value::Int(i) => {
               if let Ok(val) = u8::try_from(*i) {
-                ipv4_spec.hdr.version_ihl = val;
-                ipv4_mask.hdr.version_ihl = u8::MAX;
+                ipv4_spec.hdr.__bindgen_anon_1.version_ihl = val;
+                ipv4_mask.hdr.__bindgen_anon_1.version_ihl = u8::MAX;
               } else {
                 bail!(FilterError::InvalidRhsValue(value.to_string()))
               }

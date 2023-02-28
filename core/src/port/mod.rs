@@ -231,7 +231,7 @@ impl Port {
 
     // reset flow control config, set to disabled
     let mut fc_conf: dpdk::rte_eth_fc_conf = unsafe { mem::zeroed() };
-    fc_conf.mode = dpdk::rte_eth_fc_mode_RTE_FC_NONE;
+    fc_conf.mode = dpdk::rte_eth_fc_mode_RTE_ETH_FC_NONE;
     let ret =
       unsafe { dpdk::rte_eth_dev_flow_ctrl_set(self.id.raw(), &mut fc_conf) };
     if ret != 0 {
@@ -294,21 +294,21 @@ impl Port {
 
     // turn on RSS
     if dev_info.flow_type_rss_offloads != 0 {
-      port_conf.rxmode.mq_mode = dpdk::rte_eth_rx_mq_mode_ETH_MQ_RX_RSS;
+      port_conf.rxmode.mq_mode = dpdk::rte_eth_rx_mq_mode_RTE_ETH_MQ_RX_RSS;
       port_conf.rx_adv_conf.rss_conf.rss_key =
         SYMMETRIC_RSS_KEY.as_ptr() as *mut u8;
       port_conf.rx_adv_conf.rss_conf.rss_key_len = RSS_KEY_LEN as u8;
       port_conf.rx_adv_conf.rss_conf.rss_hf =
-        (dpdk::ETH_RSS_IP | dpdk::ETH_RSS_TCP | dpdk::ETH_RSS_UDP) as u64;
+        (dpdk::RTE_ETH_RSS_IP | dpdk::RTE_ETH_RSS_TCP | dpdk::RTE_ETH_RSS_UDP) as u64;
     }
 
     let max_rx_pkt_len = mtu_to_max_frame_len(mtu as u32);
-    port_conf.rxmode.max_rx_pkt_len =
+    port_conf.rxmode.mtu =
       cmp::max(dpdk::RTE_ETHER_MAX_LEN, max_rx_pkt_len);
 
     // turns on VLAN stripping if supported
-    if dev_info.rx_offload_capa & dpdk::DEV_RX_OFFLOAD_VLAN_STRIP as u64 != 0 {
-      port_conf.rxmode.offloads |= dpdk::DEV_RX_OFFLOAD_VLAN_STRIP as u64;
+    if dev_info.rx_offload_capa & dpdk::RTE_ETH_VLAN_STRIP_OFFLOAD as u64 != 0 {
+      port_conf.rxmode.offloads |= dpdk::RTE_ETH_VLAN_STRIP_OFFLOAD as u64;
     }
 
     {

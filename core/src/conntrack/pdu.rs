@@ -1,10 +1,17 @@
 use crate::memory::mbuf::Mbuf;
 use crate::protocols::packet::ethernet::Ethernet;
 use crate::protocols::packet::ipv4::Ipv4;
-use crate::protocols::packet::ipv6::Ipv6;
+// use crate::protocols::packet::ipv6::Ipv6;
 use crate::protocols::packet::tcp::{Tcp, TCP_PROTOCOL};
 use crate::protocols::packet::udp::{Udp, UDP_PROTOCOL};
+#[cfg(all(feature = "retina", not(feature = "run")))]
 use crate::protocols::packet::Packet;
+#[cfg(all(feature = "run", not(feature = "retina")))]
+use crate::protocols::packet::ipv4::IpProtocol;
+#[cfg(all(feature = "run", not(feature = "retina")))]
+use crate::protocols::packet::Cursor;
+#[cfg(all(feature = "run", not(feature = "retina")))]
+use crate::protocols::packet::udp::UDP_HEADER_LEN;
 
 use anyhow::{bail, Result};
 
