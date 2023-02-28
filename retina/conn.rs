@@ -1,5 +1,5 @@
 use core::config::load_config;
-use core::subscription::Connection;
+use core::subscription::Frame;
 use core::Runtime;
 use core::rte_rdtsc;
 use filtergen::filter;
@@ -28,7 +28,7 @@ fn main() {
     let args = Args::parse();
     let config = load_config(&args.config);
     let cycle = args.spin;
-    let callback = |conn: Connection| {
+    let callback = |conn: Frame| {
         spin(cycle);
     };
     let mut runtime = Runtime::new(config, filter, callback).unwrap();
